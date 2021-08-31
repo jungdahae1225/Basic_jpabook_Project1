@@ -8,14 +8,18 @@ public class Member {
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
-    private String names;
-    private String city;
-    private String street;
-    private String zipcode;//우편번호
 
+    @Column(name = "USERNAME")
+    private String name;
 
-    //==보통 getter는 기본적으로 만들어줄 필요가 있고, SETTER는 상황에 따라서 만들도록 한다==//
-    //==SETTER를 만들면 여기저기 다 쓸 수 있게 되므로 유지보수에 좋지 않다.==//
+    //@Column(name = "TEAM_ID") //외래키를 그대로 사용
+    //private Long teamId;
+
+    //==객체 연관관계를 사용하기 위함==//
+    @ManyToOne //해당 클래스를 기준으로 연관관계를 맺어줄 아이와 무슨 관계에 있는지 알려줘야 한다. ==> 현재 MEMBER : TEAM == N : 1 관계다. 즉 다대일 관계.
+    @JoinColumn(name = "TEAM_ID") //해당 관계를 맺을 때 조인하는 컬럼이 뭔지 알려준다.  //이 두가지만 해주면 됨.
+    private Team team;
+
     public Long getId() {
         return id;
     }
@@ -24,35 +28,19 @@ public class Member {
         this.id = id;
     }
 
-    public String getNames() {
-        return names;
+    public String getName() {
+        return name;
     }
 
-    public void setNames(String names) {
-        this.names = names;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

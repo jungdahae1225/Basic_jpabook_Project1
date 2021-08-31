@@ -1,6 +1,7 @@
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,7 +24,22 @@ public class JpaMain {
         transaction.begin(); //트랜젝션 시작
 
         try {
-           transaction.commit();
+            //팀 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            entityManager.persist(team);
+            //회원 저장
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team); //단방향 연관관계 설정, 참조 저장 (객체를 테이블에 맞춰 모델링 했던 코드와 달리 이렇게 바로 객체를 넣어 연결가능하다.)
+            entityManager.persist(member);
+
+            //조회
+            Member findMember = entityManager.find(Member.class, member.getId());
+            //참조를 사용해서 연관관계 조회
+            Team findTeam = findMember.getTeam(); //객체를 테이블에 맞춰 모델링 했던 코드와 달리 이렇게 바로 해당 member의 소속 팀을 찾을 수 있다.
+
+            transaction.commit();
         }catch (Exception e){
             //문제가 발생 하면 catch문에서 예외처리로 트랜젝션 롤백해주기.
             transaction.rollback();
