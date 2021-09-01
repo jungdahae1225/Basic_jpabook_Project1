@@ -9,11 +9,19 @@ public class OrderItem {
     @Column(name = "ORDER_ITEM_ID")
     private Long id;
 
-    @Column(name = "ORDER_ID")
-    private Long orderId;
+    //@Column(name = "ORDER_ID")
+    //private Long orderId;
 
-    @Column(name = "ITEM_ID")
-    private Long itemId;
+    @ManyToOne //현재 OrderItem테이블과 Order테이블은 다대일관계 -> 추후 Order테이블에서 반대로 OrderItem테이블을 참고하는게 비지니스적으로 필요성이 있다고 판단되어 양방향으로 만들거임
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
+
+    //@Column(name = "ITEM_ID")
+    //private Long itemId;
+
+    @ManyToOne//현재 OrderItem테이블과 Item테이블은 다대일관계
+    @JoinColumn(name = "ITEM_ID")
+    private Item item;
 
     private int orderPrice;
     private int count;
@@ -26,20 +34,20 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getOrderPrice() {

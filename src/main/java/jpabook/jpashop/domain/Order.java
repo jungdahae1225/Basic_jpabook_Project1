@@ -2,6 +2,8 @@ package jpabook.jpashop.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ORDERS") //DB 종류 중에 ORDER가 예약어로 걸려있는 DB가 있어서.
@@ -10,8 +12,15 @@ public class Order {
     @Column(name = "ORDER_ID")
     private Long id;
 
-    @Column(name = "MEMBER_ID") //객체 지향적이지는 않다,, 관계형 객체 설계를 테이블 설계에 맞춘 방식.
-    private Long memberId;
+    //@Column(name = "MEMBER_ID") //객체 지향적이지는 않다,, 관계형 객체 설계를 테이블 설계에 맞춘 방식.
+    //private Long memberId;
+
+    @ManyToOne
+    @JoinColumn(name="MEMBER_ID")
+    private Member_forteam member;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
 
@@ -26,12 +35,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Member_forteam getMemberId() {
+        return member;
     }
 
     public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+        this.member = member;
     }
 
     public LocalDateTime getOrderDate() {
@@ -48,5 +57,11 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    /**연관관계 편의 메소드**/
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }
