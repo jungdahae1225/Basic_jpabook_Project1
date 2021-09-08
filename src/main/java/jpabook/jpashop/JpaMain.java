@@ -28,6 +28,18 @@ public class JpaMain {
             Order order = new Order();
             order.addOrderItem(new OrderItem());
 
+            /**==영속성 컨텍스트가 flush() 되는 시점 ==
+             * 1. 강제 호출 (직접 코드 entityManager.flush(); 넣어주는 방법)
+             * 2. 자동 호출
+             *      1) 트랜젝션이 commit되는 시점
+             *      2) query가 나갈 때, 쿼리를 날리기 직전.
+             * **/
+
+
+            //entityManager.flush(); //영속성 컨택스트 속 캐시들을 DB에 날리는 것 (강제 flush)
+            //entityManager.clear(); //영속성 컨텍스트 속 캐시를 모두 지우는 것
+
+
             transaction.commit();
         }catch (Exception e){
             //문제가 발생 하면 catch문에서 예외처리로 트랜젝션 롤백해주기.
